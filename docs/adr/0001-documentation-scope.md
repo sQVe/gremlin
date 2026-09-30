@@ -37,7 +37,7 @@ new ADR that replaces it. Do not change the rules in place.
 ## Tradeoffs
 
 - Fewer descriptions of behavior to keep in sync with code.
-- Readers who want current behavior must read the code.
+- Cost: readers who want current behavior must read the code.
 - Cost: a reader who wants a guided tour of a feature does not get one.
 - Cost: a decision recorded once is not updated as the feature grows, so an ADR describes the choice
   at the time it was made, not today's code.

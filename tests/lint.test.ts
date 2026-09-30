@@ -1,21 +1,20 @@
+import { expect, it, onTestFinished } from 'bun:test';
 import { spawnSync } from 'node:child_process';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { expect, it } from 'vitest';
-
 const root = fileURLToPath(new URL('../', import.meta.url));
 
-it('rejects lint warnings in project checks', async ({ onTestFinished }) => {
+it('rejects lint warnings in project checks', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-lint-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixture = join(directory, 'warning.js');
   await writeFile(fixture, 'console.log("warning fixture");\n');
 
-  const result = spawnSync('pnpm', ['lint', fixture], {
+  const result = spawnSync(process.execPath, ['run', 'lint', fixture], {
     cwd: root,
     encoding: 'utf8',
     timeout: 20_000,
@@ -27,7 +26,7 @@ it('rejects lint warnings in project checks', async ({ onTestFinished }) => {
   expect(result.stdout).toContain('eslint(no-console)');
 }, 30_000);
 
-it('enforces house style only when explicitly enabled', async ({ onTestFinished }) => {
+it('enforces house style only when explicitly enabled', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
@@ -56,7 +55,7 @@ it('enforces house style only when explicitly enabled', async ({ onTestFinished 
 
   const environment = { ...process.env, GREMLIN_LINT_STYLE: '0' };
 
-  const ordinary = spawnSync('pnpm', ['lint', fixture], {
+  const ordinary = spawnSync(process.execPath, ['run', 'lint', fixture], {
     cwd: root,
     env: environment,
     encoding: 'utf8',
@@ -88,9 +87,7 @@ it('enforces house style only when explicitly enabled', async ({ onTestFinished 
   }
 }, 60_000);
 
-it('checks binding names and helper order without rejecting external fields or recursion', async ({
-  onTestFinished,
-}) => {
+it('checks binding names and helper order without rejecting external fields or recursion', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-bindings-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
@@ -199,7 +196,7 @@ it('checks binding names and helper order without rejecting external fields or r
   ).toHaveLength(1);
 }, 30_000);
 
-it('fixes house spacing without changing comments or names', async ({ onTestFinished }) => {
+it('fixes house spacing without changing comments or names', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-fix-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
@@ -282,9 +279,7 @@ it('fixes house spacing without changing comments or names', async ({ onTestFini
   );
 }, 60_000);
 
-it('pads loop exits and multiline statements in a form the formatter keeps', async ({
-  onTestFinished,
-}) => {
+it('pads loop exits and multiline statements in a form the formatter keeps', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-multiline-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
@@ -401,9 +396,7 @@ it('pads loop exits and multiline statements in a form the formatter keeps', asy
   expect(recheck.status).toBe(0);
 }, 60_000);
 
-it('moves types above unrelated values but leaves types derived from a value beside it', async ({
-  onTestFinished,
-}) => {
+it('moves types above unrelated values but leaves types derived from a value beside it', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-types-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
@@ -506,9 +499,7 @@ it('moves types above unrelated values but leaves types derived from a value bes
   );
 }, 60_000);
 
-it('keeps size thresholds advisory without weakening other lint checks', async ({
-  onTestFinished,
-}) => {
+it('keeps size thresholds advisory without weakening other lint checks', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-size-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
@@ -539,9 +530,7 @@ it('keeps size thresholds advisory without weakening other lint checks', async (
   expect(result.stdout).not.toContain('max-params');
 }, 30_000);
 
-it('limits the checks joined in one condition and rejects mixed operators', async ({
-  onTestFinished,
-}) => {
+it('limits the checks joined in one condition and rejects mixed operators', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-conditions-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 

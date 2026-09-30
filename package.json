@@ -6,37 +6,39 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "changeset": "changeset",
-    "changeset:check": "changeset status --since=origin/main",
-    "changeset:version": "changeset version && vp fmt",
-    "check": "pnpm typecheck && pnpm style:check && pnpm format:check && pnpm knip && pnpm test",
-    "fix": "vp lint --fix && vp fmt",
-    "knip": "knip",
-    "format": "vp fmt",
-    "format:check": "vp fmt --check",
-    "lint": "vp lint --deny-warnings",
-    "style:check": "node scripts/runStyle.ts",
-    "style:fix": "node scripts/runStyle.ts --fix",
-    "prepare": "vp config",
-    "test": "vp test",
-    "test:changed": "vp test --changed",
-    "typecheck": "pnpm exec tsc --noEmit",
-    "release:github": "pnpm changeset tag"
+    "changeset": "bunx --bun changeset",
+    "changeset:check": "bunx --bun changeset status --since=origin/main",
+    "changeset:version": "bunx --bun changeset version && bunx --bun vp fmt",
+    "check": "bun run --bun typecheck && bun run --bun style:check && bun run --bun format:check && bun run --bun knip && bun run --bun test",
+    "fix": "bunx --bun vp lint --fix && bunx --bun vp fmt",
+    "knip": "bunx --bun knip",
+    "format": "bunx --bun vp fmt",
+    "format:check": "bunx --bun vp fmt --check",
+    "lint": "bunx --bun vp lint --deny-warnings",
+    "style:check": "bun scripts/runStyle.ts",
+    "style:fix": "bun scripts/runStyle.ts --fix",
+    "prepare": "bunx --bun vp config",
+    "test": "bun test",
+    "test:changed": "bun test --changed",
+    "typecheck": "bunx --bun tsc --noEmit",
+    "release:github": "bunx --bun changeset tag"
   },
   "devDependencies": {
     "@changesets/changelog-github": "1.0.1",
     "@changesets/cli": "3.0.2",
     "@oxlint/plugins": "1.79.0",
     "@stylistic/eslint-plugin": "5.10.0",
-    "@types/node": "24.13.3",
+    "@types/bun": "1.4.2",
     "jiti": "2.7.0",
     "knip": "6.37.0",
     "typescript": "7.0.2",
-    "vite-plus": "0.3.0",
-    "vitest": "4.1.11"
+    "vite-plus": "0.3.0"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0"
   },
   "engines": {
-    "node": ">=24.11.0"
+    "bun": ">=1.4.2"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "bun@1.4.2"
 }

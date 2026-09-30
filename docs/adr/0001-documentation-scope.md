@@ -23,7 +23,8 @@ Gremlin documents decisions, not features.
 - ADRs record lasting decisions and their reasons. Include only the details needed to understand or
   follow the decision.
 - Code and tests state behavior.
-- `docs/` holds only what no feature owns: the development guide and the ADRs.
+- `docs/` holds only what no feature owns: the documentation index, the development guide, and the
+  ADRs.
 - The root README introduces the project and links to the rest. Topic details go in `docs/` and are
   linked from the [documentation index](../README.md).
 

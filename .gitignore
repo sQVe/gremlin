@@ -3,7 +3,6 @@ node_modules/
 dist/
 coverage/
 .tau/
-.code-review-graph/
 
 .env*
 

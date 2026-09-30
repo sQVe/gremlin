@@ -353,7 +353,7 @@ export default defineConfig({
     printWidth: 100,
     singleQuote: true,
     // Local agent state is not source and must not be reformatted.
-    ignorePatterns: ['pnpm-lock.yaml', '.tau/**', '.code-review-graph/**'],
+    ignorePatterns: ['pnpm-lock.yaml', '.tau/**'],
     overrides: [{ files: ['*.md'], options: { proseWrap: 'always' } }],
     sortImports: {
       newlinesBetween: true,

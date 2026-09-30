@@ -8,3 +8,4 @@ changes, failed checks, and conflicted pull requests.
 > Gremlin is in early setup. The repository contains development tooling only; there is no app yet.
 
 - [Development](./docs/development.md)
+- [Documentation](./docs/README.md)

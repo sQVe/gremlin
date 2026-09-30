@@ -40,7 +40,7 @@ const paddingRule = (...entries: object[]): ['error', ...object[]] => ['error', 
 
 export default defineConfig({
   lint: {
-    plugins: ['typescript', 'unicorn', 'oxc', 'import', 'vitest', 'node'],
+    plugins: ['typescript', 'unicorn', 'oxc', 'import', 'node'],
     categories: {
       correctness: 'error',
       suspicious: 'error',
@@ -353,7 +353,7 @@ export default defineConfig({
     printWidth: 100,
     singleQuote: true,
     // Local agent state is not source and must not be reformatted.
-    ignorePatterns: ['pnpm-lock.yaml', '.tau/**'],
+    ignorePatterns: ['bun.lock', '.tau/**'],
     overrides: [{ files: ['*.md'], options: { proseWrap: 'always' } }],
     sortImports: {
       newlinesBetween: true,
@@ -362,9 +362,9 @@ export default defineConfig({
   },
   staged: {
     '*.{ts,tsx,js,jsx,mjs,cjs}': [
-      'node scripts/runStyle.ts',
-      'vp fmt --check --no-error-on-unmatched-pattern',
+      'bun scripts/runStyle.ts',
+      'bunx --bun vp fmt --check --no-error-on-unmatched-pattern',
     ],
-    '!(pnpm-lock).{json,md,yaml,yml,css}': 'vp fmt --check --no-error-on-unmatched-pattern',
+    '*.{json,md,yaml,yml,css}': 'bunx --bun vp fmt --check --no-error-on-unmatched-pattern',
   },
 });

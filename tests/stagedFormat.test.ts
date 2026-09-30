@@ -1,15 +1,14 @@
+import { expect, it, onTestFinished } from 'bun:test';
 import { spawnSync } from 'node:child_process';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { expect, it } from 'vitest';
-
 import viteConfig from '../vite.config.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const jsonFamily = '!(pnpm-lock).{json,md,yaml,yml,css}';
+const jsonFamily = '*.{json,md,yaml,yml,css}';
 const typeScriptFamily = '*.{ts,tsx,js,jsx,mjs,cjs}';
 
 const stagedCommands = (pattern: string): string[] => {
@@ -75,7 +74,7 @@ const createTemporaryFixture = async (name: string, contents: string) => {
   return { directory, path };
 };
 
-it('accepts staged paths that the formatter ignores', async ({ onTestFinished }) => {
+it('accepts staged paths that the formatter ignores', async () => {
   const ignoredJson = await createIgnoredFixture('ignored.json', '{"alpha":   1}\n');
   const ignoredScript = await createIgnoredFixture('ignored.ts', 'const alpha   = 1\n');
 
@@ -88,9 +87,7 @@ it('accepts staged paths that the formatter ignores', async ({ onTestFinished })
   expect(runStagedFormatter(typeScriptFamily, [ignoredScript.path])).toBe(0);
 });
 
-it('rejects a supported unformatted staged file even when another target is ignored', async ({
-  onTestFinished,
-}) => {
+it('rejects a supported unformatted staged file even when another target is ignored', async () => {
   const ignored = await createIgnoredFixture('ignored.json', '{"alpha":   1}\n');
   const unformatted = await createTemporaryFixture('unformatted.json', '{"alpha":   1}\n');
 
@@ -102,14 +99,14 @@ it('rejects a supported unformatted staged file even when another target is igno
   expect(runStagedFormatter(jsonFamily, [ignored.path, unformatted.path])).toBe(1);
 });
 
-it('accepts a supported formatted staged file', async ({ onTestFinished }) => {
+it('accepts a supported formatted staged file', async () => {
   const formatted = await createTemporaryFixture('formatted.json', '{\n  "alpha": 1\n}\n');
   onTestFinished(() => rm(formatted.directory, { recursive: true, force: true }));
 
   expect(runStagedFormatter(jsonFamily, [formatted.path])).toBe(0);
 });
 
-it('rejects a formatted staged script that breaks house style', async ({ onTestFinished }) => {
+it('rejects a formatted staged script that breaks house style', async () => {
   const script = await createTemporaryFixture('style.ts', 'export const MAX_RETRIES = 3;\n');
   onTestFinished(() => rm(script.directory, { recursive: true, force: true }));
 

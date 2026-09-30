@@ -5,7 +5,7 @@
 patterns = [".grove.toml", ".env.local"]
 
 [hooks]
-add = ["pnpm install --frozen-lockfile"]
+add = ["bun install --frozen-lockfile"]
 
 [autolock]
 patterns = ["main"]

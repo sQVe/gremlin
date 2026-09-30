@@ -3,9 +3,9 @@
 Terminal UI for GitHub work that needs action. Read [the development guide](docs/development.md) for
 local setup and verification.
 
-- Run `pnpm check` before finishing changes. It runs typechecking, lint with house style,
+- Run `bun run check` before finishing changes. It runs typechecking, lint with house style,
   formatting, Knip, and tests.
-- Format with `pnpm format`; configuration lives in `vite.config.ts`.
+- Format with `bun run format`; configuration lives in `vite.config.ts`.
 - Follow the decisions in [docs/adr](docs/adr/README.md), and record new decisions there. Read that
   guide before adding an ADR. Do not write documents that explain how a feature works; see
   [ADR 0001](docs/adr/0001-documentation-scope.md).
@@ -15,7 +15,7 @@ local setup and verification.
   not mix `&&` with `||`; name the inner group instead.
 - Comment only what the code cannot say, such as a constraint or a workaround. Do not describe the
   code's history.
-- Add a changeset with `pnpm changeset` for user-facing changes.
+- Add a changeset with `bun run changeset` for user-facing changes.
 - Before finishing a document, check its local links and verify the commands it gives against the
   repository.
 

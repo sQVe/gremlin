@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "types": ["node"]
+    "types": ["bun"]
   },
   "include": ["tests/**/*.ts", "scripts/**/*.ts", "vite.config.ts"]
 }

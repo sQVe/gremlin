@@ -49,7 +49,7 @@ export default defineConfig({
     options: {
       typeAware: true,
     },
-    jsPlugins: styleEnabled ? ['@stylistic/eslint-plugin', './scripts/stylePlugin.ts'] : [],
+    jsPlugins: ['./scripts/stylePlugin.ts', ...(styleEnabled ? ['@stylistic/eslint-plugin'] : [])],
     rules: {
       ...(styleEnabled
         ? {
@@ -87,6 +87,7 @@ export default defineConfig({
             ),
           }
         : {}),
+      'gremlin/module-boundaries': 'error',
       'typescript/no-unnecessary-condition': 'error',
       'typescript/prefer-readonly': 'error',
       'typescript/no-unsafe-type-assertion': 'error',

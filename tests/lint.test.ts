@@ -247,13 +247,22 @@ it('allows PascalCase only for function components that return JSX', async () =>
     .split('\n')
     .filter((line) => line.includes('gremlin(naming-convention)'));
 
+  const invalidLines = fixtures[1]![1]!.split('\n');
+
+  const reportedName = (diagnostic: string) => {
+    const [, line, column] = diagnostic.match(/\/invalid\.tsx:(\d+):(\d+):/) ?? [];
+    const sourceLine = invalidLines[Number(line) - 1] ?? '';
+
+    return sourceLine.slice(Number(column) - 1).match(/^\w+/)?.[0] ?? '';
+  };
+
   expect(result.error).toBeUndefined();
   expect(diagnostics.filter((line) => line.includes('/valid.tsx:'))).toEqual([]);
 
   expect(
     diagnostics
       .filter((line) => line.includes('/invalid.tsx:'))
-      .map((line) => line.match(/"(\w+)"/)?.[1] ?? '')
+      .map(reportedName)
       .toSorted((left, right) => left.localeCompare(right)),
   ).toEqual([
     'Arity',

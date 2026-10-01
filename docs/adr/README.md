@@ -23,3 +23,4 @@ decision replaces it, change its status to Superseded with a link to the replace
 
 - [0001: Documentation scope](./0001-documentation-scope.md)
 - [0002: Bun as runtime, package manager, and test runner](./0002-bun-toolchain.md)
+- [0003: OpenTUI with React bindings as the renderer](./0003-opentui-react-renderer.md)

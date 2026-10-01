@@ -110,7 +110,7 @@ const constantInitializerOf = (definition: Definition): ESTree.Node | undefined 
 };
 
 const definedFunctionOf = (definition: Definition): ESTree.Node | undefined => {
-  if (definition.node.type === 'FunctionDeclaration') {
+  if (definition.type === 'FunctionName' && definition.node.type === 'FunctionDeclaration') {
     return definition.node;
   }
 

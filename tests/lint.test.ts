@@ -225,6 +225,10 @@ it('allows PascalCase only for function components that return JSX', async () =>
       export var VariableView = function () { return <box />; };
       export const { name: DisplayName } = () => <box />;
       export const { length: Arity } = function () { return <box />; };
+      export function ParameterView(Label: string) { return <box>{Label}</box>; }
+      export function DestructuredView({ title: Title }: { title: string }) {
+        return <box>{Title}</box>;
+      }
     `,
     ],
   ];
@@ -254,12 +258,14 @@ it('allows PascalCase only for function components that return JSX', async () =>
   ).toEqual([
     'Arity',
     'DisplayName',
+    'Label',
     'MAIN_VIEW',
     'MAX_ITEMS',
     'MaxItems',
     'MutableView',
     'NotView',
     'Renderer',
+    'Title',
     'VariableView',
   ]);
 }, 30_000);

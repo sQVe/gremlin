@@ -196,6 +196,74 @@ it('checks binding names and helper order without rejecting external fields or r
   ).toHaveLength(1);
 }, 30_000);
 
+it('allows PascalCase only for function components that return JSX', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-components-'));
+  onTestFinished(() => rm(directory, { recursive: true, force: true }));
+
+  const fixtures = [
+    [
+      'valid.tsx',
+      `
+      export function DeclaredView() { return <box />; }
+      export const ArrowView = () => <box>text</box>;
+      export const ExpressionView = function () { return (<><box /></>); };
+      export const LoadingView = (loading: boolean) => {
+        if (loading) { return null; }
+        return loading ? <text /> : <box />;
+      };
+    `,
+    ],
+    [
+      'invalid.tsx',
+      `
+      export const MaxItems = 3;
+      export const MAX_ITEMS = 3;
+      export function NotView() { return 1; }
+      export const Renderer = () => { const render = () => <box />; return render; };
+      export const MAIN_VIEW = () => <box />;
+      export let MutableView = () => <box />;
+      export var VariableView = function () { return <box />; };
+      export const { name: DisplayName } = () => <box />;
+      export const { length: Arity } = function () { return <box />; };
+    `,
+    ],
+  ];
+
+  for (const [name, source] of fixtures) {
+    await writeFile(join(directory, name!), source!);
+  }
+
+  const result = spawnSync(process.execPath, ['scripts/runStyle.ts', directory], {
+    cwd: root,
+    encoding: 'utf8',
+    timeout: 20_000,
+  });
+
+  const diagnostics = result.stdout
+    .split('\n')
+    .filter((line) => line.includes('gremlin(naming-convention)'));
+
+  expect(result.error).toBeUndefined();
+  expect(diagnostics.filter((line) => line.includes('/valid.tsx:'))).toEqual([]);
+
+  expect(
+    diagnostics
+      .filter((line) => line.includes('/invalid.tsx:'))
+      .map((line) => line.match(/"(\w+)"/)?.[1] ?? '')
+      .toSorted((left, right) => left.localeCompare(right)),
+  ).toEqual([
+    'Arity',
+    'DisplayName',
+    'MAIN_VIEW',
+    'MAX_ITEMS',
+    'MaxItems',
+    'MutableView',
+    'NotView',
+    'Renderer',
+    'VariableView',
+  ]);
+}, 30_000);
+
 it('fixes house spacing without changing comments or names', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-fix-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));

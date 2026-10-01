@@ -62,6 +62,63 @@ const isUnusedMarker = (definition: Definition, variable: Variable): boolean => 
   return definition.node.type === 'VariableDeclarator' && definition.node.id.type !== 'Identifier';
 };
 
+const isFunction = (node: ESTree.Node): boolean =>
+  node.type === 'FunctionDeclaration' ||
+  node.type === 'FunctionExpression' ||
+  node.type === 'ArrowFunctionExpression';
+
+const unwrapExpression = (node: ESTree.Node): ESTree.Node =>
+  isWrappedExpression(node) ? unwrapExpression(node.expression) : node;
+
+const isJsx = (node: ESTree.Node): boolean => {
+  const value = unwrapExpression(node);
+
+  if (value.type === 'ConditionalExpression') {
+    return isJsx(value.consequent) || isJsx(value.alternate);
+  }
+
+  if (value.type === 'LogicalExpression') {
+    return isJsx(value.left) || isJsx(value.right);
+  }
+
+  return value.type === 'JSXElement' || value.type === 'JSXFragment';
+};
+
+const enclosingFunctionOf = (node: ESTree.Node): ESTree.Node | undefined => {
+  let current = node.parent;
+
+  while (current !== null && !isFunction(current)) {
+    current = current.parent;
+  }
+
+  return current ?? undefined;
+};
+
+// A `let` or `var` binding can be reassigned, and a destructured name holds a field of the
+// function rather than the function.
+const constantInitializerOf = (definition: Definition): ESTree.Node | undefined => {
+  const declarator = definition.node;
+
+  if (declarator.type !== 'VariableDeclarator' || declarator.id.type !== 'Identifier') {
+    return undefined;
+  }
+
+  const declaration = declarator.parent;
+  const constant = declaration.type === 'VariableDeclaration' && declaration.kind === 'const';
+
+  return constant && declarator.init !== null ? unwrapExpression(declarator.init) : undefined;
+};
+
+const definedFunctionOf = (definition: Definition): ESTree.Node | undefined => {
+  if (definition.node.type === 'FunctionDeclaration') {
+    return definition.node;
+  }
+
+  const initializer = constantInitializerOf(definition);
+
+  return initializer !== undefined && isFunction(initializer) ? initializer : undefined;
+};
+
 const declarationOf = (statement: ESTree.Node): ESTree.Node => {
   if (statement.type === 'ExportNamedDeclaration') {
     return statement.declaration ?? statement;
@@ -348,6 +405,9 @@ const stylePlugin: Plugin = {
         messages: { name: 'Use {{format}} for "{{name}}".' },
       },
       create(context) {
+        // JSX treats lowercase tags as built-in elements, so components need PascalCase names.
+        const components = new Set<ESTree.Node>();
+
         const checkName = (
           node: ESTree.BindingIdentifier,
           format: 'camelCase' | 'PascalCase',
@@ -382,14 +442,29 @@ const stylePlugin: Plugin = {
             return;
           }
 
-          checkName(
-            definition.name,
-            definition.type === 'ClassName' ? 'PascalCase' : 'camelCase',
-            name,
-          );
+          const definedFunction = definedFunctionOf(definition);
+
+          const componentName =
+            definedFunction !== undefined && components.has(definedFunction) && /^[A-Z]/.test(name);
+
+          const pascalCase = definition.type === 'ClassName' || componentName;
+
+          checkName(definition.name, pascalCase ? 'PascalCase' : 'camelCase', name);
         };
 
         return {
+          ReturnStatement(node) {
+            const returningFunction = enclosingFunctionOf(node);
+
+            if (node.argument !== null && returningFunction !== undefined && isJsx(node.argument)) {
+              components.add(returningFunction);
+            }
+          },
+          ArrowFunctionExpression(node) {
+            if (node.expression && isJsx(node.body)) {
+              components.add(node);
+            }
+          },
           'Program:exit'() {
             const checked = new Set<ESTree.Node>();
 

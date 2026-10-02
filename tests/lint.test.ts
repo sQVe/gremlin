@@ -7,6 +7,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 
+// The linter picks its default output format from the environment, such as GitHub Actions or an AI
+// agent. Tests that read paths from diagnostics need one line per diagnostic.
+const unixFormat = ['--format', 'unix'];
+
 it('rejects lint warnings in project checks', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'gremlin-lint-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
@@ -158,7 +162,7 @@ it('checks binding names and helper order without rejecting external fields or r
     await writeFile(join(directory, name!), source!);
   }
 
-  const result = spawnSync(process.execPath, ['scripts/runStyle.ts', directory], {
+  const result = spawnSync(process.execPath, ['scripts/runStyle.ts', ...unixFormat, directory], {
     cwd: root,
     encoding: 'utf8',
     timeout: 20_000,
@@ -237,7 +241,7 @@ it('allows PascalCase only for function components that return JSX', async () =>
     await writeFile(join(directory, name!), source!);
   }
 
-  const result = spawnSync(process.execPath, ['scripts/runStyle.ts', directory], {
+  const result = spawnSync(process.execPath, ['scripts/runStyle.ts', ...unixFormat, directory], {
     cwd: root,
     encoding: 'utf8',
     timeout: 20_000,
@@ -521,7 +525,7 @@ it('moves types above unrelated values but leaves types derived from a value bes
     ].join('\n'),
   );
 
-  const check = spawnSync(process.execPath, ['scripts/runStyle.ts', fixture], {
+  const check = spawnSync(process.execPath, ['scripts/runStyle.ts', ...unixFormat, fixture], {
     cwd: root,
     encoding: 'utf8',
     timeout: 20_000,
@@ -648,7 +652,7 @@ it('limits the checks joined in one condition and rejects mixed operators', asyn
     await writeFile(join(directory, name!), source!);
   }
 
-  const result = spawnSync(process.execPath, ['scripts/runStyle.ts', directory], {
+  const result = spawnSync(process.execPath, ['scripts/runStyle.ts', ...unixFormat, directory], {
     cwd: root,
     encoding: 'utf8',
     timeout: 20_000,
@@ -934,7 +938,7 @@ it('keeps imports inside module boundaries in ordinary lint', async () => {
     await writeFile(path, `${lines.join('\n')}\n`);
   }
 
-  const result = spawnSync(process.execPath, ['run', 'lint', project], {
+  const result = spawnSync(process.execPath, ['run', 'lint', project, ...unixFormat], {
     cwd: root,
     env: { ...process.env, GREMLIN_LINT_STYLE: '0' },
     encoding: 'utf8',

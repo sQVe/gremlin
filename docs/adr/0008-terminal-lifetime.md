@@ -26,8 +26,9 @@
 
 ## Decision
 
-`terminal.tsx` alone owns the renderer, the keymap, React mounting, signal handlers, and shutdown.
-`index.ts` composes dependencies and starts `terminal`.
+`terminal.tsx` alone owns the renderer, the keymap instance, React mounting, signal handlers, and
+shutdown. The bindings on that instance come from the command catalog. `index.ts` composes
+dependencies and starts `terminal`.
 
 ### Shutdown
 

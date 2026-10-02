@@ -1,4 +1,4 @@
-# Gremlin
+# Zeta
 
 Terminal UI for GitHub work that needs action. Read [the development guide](docs/development.md) for
 local setup and verification.
@@ -26,7 +26,7 @@ local setup and verification.
   the folder are private. Flat modules are `config.ts`, `actions.ts`, `localState.ts`,
   `commands.ts`, `index.ts`, and `terminal.tsx`. See
   [ADR 0004](docs/adr/0004-capability-modules.md).
-- Imports follow the table in ADR 0004. `gremlin/module-boundaries` enforces it in ordinary lint. Do
+- Imports follow the table in ADR 0004. `zeta/module-boundaries` enforces it in ordinary lint. Do
   not silence it; change the table in `scripts/stylePlugin.ts` when a new edge keeps the ADR's
   directions.
 - Put types beside the code that owns them. Do not add barrels, a shared `types.ts`, or `utils/`.

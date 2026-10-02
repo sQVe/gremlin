@@ -5,7 +5,7 @@ Set up a checkout and check changes before release.
 ## Local setup
 
 Use the Bun version specified by `packageManager` in [package.json](../package.json). Bun is the
-runtime, package manager, and test runner. Run these commands from the Gremlin checkout:
+runtime, package manager, and test runner. Run these commands from the Zeta checkout:
 
 ```sh
 bun install --frozen-lockfile
@@ -30,8 +30,8 @@ checks on staged files.
 | `bun run knip`                    | Find unused files, exports, and dependencies.                             |
 
 Style commands accept file paths, for example `bun run style:fix tests/lint.test.ts`. Rename
-bindings and move helpers manually. Do not set `GREMLIN_LINT_STYLE` globally; the style commands set
-it for their child linter.
+bindings and move helpers manually. Do not set `ZETA_LINT_STYLE` globally; the style commands set it
+for their child linter.
 
 Configure linting, formatting, and staged checks in [vite.config.ts](../vite.config.ts). Run
 installed command-line tools with `bunx --bun`, as the scripts do. The tools start with a Node
@@ -52,4 +52,4 @@ The [changeset check](../.github/workflows/changeset.yml) requires a changeset w
 `src/`, but not for changes only to docs, tooling, or dependencies.
 
 The [release workflow](../.github/workflows/release.yml) opens version PRs and creates Git tags and
-GitHub releases. Gremlin is private and is not published to npm.
+GitHub releases. Zeta is private and is not published to npm.

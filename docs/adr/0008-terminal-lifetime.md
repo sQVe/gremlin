@@ -5,14 +5,14 @@
 
 ## Context
 
-- Gremlin stops on `q`, Ctrl+C, SIGINT, SIGTERM, and fatal errors. Each path must stop timers and
+- Zeta stops on `q`, Ctrl+C, SIGINT, SIGTERM, and fatal errors. Each path must stop timers and
   children, save state, and restore the terminal.
 - Surveyed OpenTUI apps work around unsafe teardown: Ox repairs terminal line discipline after
   destroy, and Cline defers destroy until input parsing finishes.
 - The renderer prototype in [ADR 0003](./0003-opentui-react-renderer.md) restored the terminal on
   `q`, Ctrl+C, and SIGINT.
-- Herdr is optional. Without it, tuicr must run in Gremlin's own terminal, so the renderer must
-  pause and resume around a child process.
+- Herdr is optional. Without it, tuicr must run in Zeta's own terminal, so the renderer must pause
+  and resume around a child process.
 
 ## Options considered
 
@@ -20,7 +20,7 @@
   handling and mounting, and terminal code could not be tested with fake dependencies.
 - Each component or hook handles its own exit. Rejected: exit paths would compete, and one could
   skip cleanup.
-- Require Herdr and run tuicr only in a Herdr pane. Rejected: Gremlin must work without Herdr.
+- Require Herdr and run tuicr only in a Herdr pane. Rejected: Zeta must work without Herdr.
 - `terminal.tsx` owns the renderer, its lifetime, and shutdown. Chosen: one module controls every
   exit path and every terminal handoff.
 
@@ -44,7 +44,7 @@ dependencies and starts `terminal`.
 
 - `terminal` provides a function that suspends input and rendering, runs a child process in the
   terminal, and resumes in `finally`. Actions receive it as an injected function.
-- If resume fails, Gremlin restores the terminal and exits.
+- If resume fails, Zeta restores the terminal and exits.
 
 ## Tradeoffs
 

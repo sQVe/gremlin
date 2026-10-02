@@ -5,12 +5,12 @@
 
 ## Context
 
-- Gremlin calls `gh`, Grove, Herdr, tuicr, the browser, the filesystem, and the clock. Tests must
-  run without a GitHub account or these tools.
+- Zeta calls `gh`, Grove, Herdr, tuicr, the browser, the filesystem, and the clock. Tests must run
+  without a GitHub account or these tools.
 - Tests of a refused action must show that no command ran and no file changed.
 - In Tau, adapter interfaces without a second implementation became scaffolding. lazygit's guide
   names a "God Struct" of broad dependencies.
-- Gremlin usually runs inside Herdr, but it must also work without Herdr.
+- Zeta usually runs inside Herdr, but it must also work without Herdr.
 
 ## Options considered
 
@@ -34,8 +34,8 @@ Side effects reach a module as a record of plain functions that the module decla
 - No adapter interfaces, classes, or containers.
 - Long-running effects accept an `AbortSignal`.
 - External tools run as argument arrays, never as shell strings.
-- Grove owns worktrees, Herdr owns workspaces, and tuicr owns reviews. Gremlin chooses the action
-  and invokes the tool.
+- Grove owns worktrees, Herdr owns workspaces, and tuicr owns reviews. Zeta chooses the action and
+  invokes the tool.
 - Actions detect Herdr and fall back when it is absent. Herdr is never required.
 
 ## Tradeoffs

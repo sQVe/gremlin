@@ -12,7 +12,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const unixFormat = ['--format', 'unix'];
 
 it('rejects lint warnings in project checks', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-lint-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-lint-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixture = join(directory, 'warning.js');
@@ -31,7 +31,7 @@ it('rejects lint warnings in project checks', async () => {
 }, 30_000);
 
 it('enforces house style only when explicitly enabled', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixture = join(directory, 'style.ts');
@@ -57,7 +57,7 @@ it('enforces house style only when explicitly enabled', async () => {
     ].join('\n'),
   );
 
-  const environment = { ...process.env, GREMLIN_LINT_STYLE: '0' };
+  const environment = { ...process.env, ZETA_LINT_STYLE: '0' };
 
   const ordinary = spawnSync(process.execPath, ['run', 'lint', fixture], {
     cwd: root,
@@ -92,7 +92,7 @@ it('enforces house style only when explicitly enabled', async () => {
 }, 60_000);
 
 it('checks binding names and helper order without rejecting external fields or recursion', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-bindings-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-bindings-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixtures = [
@@ -151,7 +151,7 @@ it('checks binding names and helper order without rejecting external fields or r
     [
       'cycle.ts',
       `
-      // eslint-disable-next-line gremlin/helper-before-use -- Mutually recursive helpers.
+      // eslint-disable-next-line zeta/helper-before-use -- Mutually recursive helpers.
       export const even = (value: number): boolean => value === 0 || odd(value - 1);
       const odd = (value: number): boolean => value !== 0 && even(value - 1);
     `,
@@ -168,7 +168,7 @@ it('checks binding names and helper order without rejecting external fields or r
     timeout: 20_000,
   });
 
-  const diagnostics = result.stdout.split('\n').filter((line) => line.includes('gremlin('));
+  const diagnostics = result.stdout.split('\n').filter((line) => line.includes('zeta('));
 
   expect(result.error).toBeUndefined();
   expect(result.status).toBe(1);
@@ -201,7 +201,7 @@ it('checks binding names and helper order without rejecting external fields or r
 }, 30_000);
 
 it('allows PascalCase only for function components that return JSX', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-components-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-components-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixtures = [
@@ -249,7 +249,7 @@ it('allows PascalCase only for function components that return JSX', async () =>
 
   const diagnostics = result.stdout
     .split('\n')
-    .filter((line) => line.includes('gremlin(naming-convention)'));
+    .filter((line) => line.includes('zeta(naming-convention)'));
 
   const invalidLines = fixtures[1]![1]!.split('\n');
 
@@ -284,7 +284,7 @@ it('allows PascalCase only for function components that return JSX', async () =>
 }, 30_000);
 
 it('fixes house spacing without changing comments or names', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-fix-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-fix-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixture = join(directory, 'spacing.ts');
@@ -367,7 +367,7 @@ it('fixes house spacing without changing comments or names', async () => {
 }, 60_000);
 
 it('pads loop exits and multiline statements in a form the formatter keeps', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-multiline-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-multiline-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixture = join(directory, 'multiline.ts');
@@ -484,11 +484,11 @@ it('pads loop exits and multiline statements in a form the formatter keeps', asy
 }, 60_000);
 
 it('moves types above unrelated values but leaves types derived from a value beside it', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-types-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-types-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixture = join(directory, 'types.ts');
-  await writeFile(join(directory, 'home.ts'), "export const home = '/gremlin';\n");
+  await writeFile(join(directory, 'home.ts'), "export const home = '/zeta';\n");
 
   await writeFile(
     fixture,
@@ -587,7 +587,7 @@ it('moves types above unrelated values but leaves types derived from a value bes
 }, 60_000);
 
 it('keeps size thresholds advisory without weakening other lint checks', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-size-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-size-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixture = join(directory, 'large.ts');
@@ -618,7 +618,7 @@ it('keeps size thresholds advisory without weakening other lint checks', async (
 }, 30_000);
 
 it('limits the checks joined in one condition and rejects mixed operators', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-style-conditions-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-style-conditions-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   const fixtures = [
@@ -669,7 +669,7 @@ it('limits the checks joined in one condition and rejects mixed operators', asyn
 }, 30_000);
 
 it('keeps imports inside module boundaries in ordinary lint', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'gremlin-boundaries-'));
+  const directory = await mkdtemp(join(tmpdir(), 'zeta-boundaries-'));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
 
   // The `src` segment above the project root must not count as the application source.
@@ -940,14 +940,14 @@ it('keeps imports inside module boundaries in ordinary lint', async () => {
 
   const result = spawnSync(process.execPath, ['run', 'lint', project, ...unixFormat], {
     cwd: root,
-    env: { ...process.env, GREMLIN_LINT_STYLE: '0' },
+    env: { ...process.env, ZETA_LINT_STYLE: '0' },
     encoding: 'utf8',
     timeout: 20_000,
   });
 
   const diagnostics = result.stdout
     .split('\n')
-    .filter((line) => line.includes('gremlin(module-boundaries)'));
+    .filter((line) => line.includes('zeta(module-boundaries)'));
 
   // The linter prints a path relative to its working directory when the file sits below it.
   const reportedPath = (diagnostic: string) => {

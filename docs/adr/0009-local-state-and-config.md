@@ -5,13 +5,13 @@
 
 ## Context
 
-- Gremlin saves dismissals between runs and reads a user config with key remaps and repository
+- Zeta saves dismissals between runs and reads a user config with key remaps and repository
   locations.
-- A crash during a write, a corrupt file, or an older Gremlin reading a newer file must not destroy
+- A crash during a write, a corrupt file, or an older Zeta reading a newer file must not destroy
   saved data.
 - In Tau, a parse-once rule still produced four parsers for one value. Each file needs one parser
   owner.
-- Gremlin runs as one process per user. No use case needs two sessions writing one state file.
+- Zeta runs as one process per user. No use case needs two sessions writing one state file.
 
 ## Options considered
 
@@ -29,29 +29,29 @@ Config and local state are versioned JSON files, parsed once at startup by their
 
 ### Files
 
-- Config lives at `$XDG_CONFIG_HOME/gremlin/config.json` and falls back to
-  `~/.config/gremlin/config.json`. `config.ts` parses it. Gremlin never writes it.
-- State lives at `$XDG_STATE_HOME/gremlin/state.json` and falls back to
-  `~/.local/state/gremlin/state.json`. `localState.ts` parses and writes it.
+- Config lives at `$XDG_CONFIG_HOME/zeta/config.json` and falls back to
+  `~/.config/zeta/config.json`. `config.ts` parses it. Zeta never writes it.
+- State lives at `$XDG_STATE_HOME/zeta/state.json` and falls back to
+  `~/.local/state/zeta/state.json`. `localState.ts` parses and writes it.
 - Each file has a `version` field. Code past the parser receives typed values only.
 
 ### Reading
 
 - A missing file means defaults.
 - Invalid config stops startup with the path and the reason.
-- Invalid state shows a warning. Gremlin runs without saved dismissals and does not write that file
+- Invalid state shows a warning. Zeta runs without saved dismissals and does not write that file
   until the user resets it.
 - An older version migrates forward in memory. State is saved in the current version on the next
   write.
-- A version newer than Gremlin knows stops startup.
+- A version newer than Zeta knows stops startup.
 
 ### Writing
 
-- Gremlin writes state to a unique temporary file beside the target, flushes and closes it, then
+- Zeta writes state to a unique temporary file beside the target, flushes and closes it, then
   renames it over the target. A failed write keeps the last valid file.
 - Writes run one at a time. A dismissal takes effect in memory at once and shows as unsaved until a
   write succeeds.
-- One Gremlin process writes a state file. Concurrent processes can lose each other's dismissals.
+- One Zeta process writes a state file. Concurrent processes can lose each other's dismissals.
 
 ### Compatibility
 
@@ -63,8 +63,8 @@ Config and local state are versioned JSON files, parsed once at startup by their
 - Saved dismissals survive crashes, corrupt files, and older versions.
 - Every format change has a version and a tested migration.
 - Cost: users must add a `version` field to their config.
-- Cost: running two Gremlin processes at once can lose dismissals.
-- Cost: invalid state needs a manual reset before Gremlin saves dismissals again.
+- Cost: running two Zeta processes at once can lose dismissals.
+- Cost: invalid state needs a manual reset before Zeta saves dismissals again.
 
 ## See also
 

@@ -429,7 +429,7 @@ const literalSourceOf = (source: ESTree.Expression): string | undefined => {
 };
 
 const stylePlugin: Plugin = {
-  meta: { name: 'gremlin' },
+  meta: { name: 'zeta' },
   rules: {
     'helper-before-use': {
       meta: {

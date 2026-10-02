@@ -5,7 +5,7 @@
 
 ## Context
 
-- Gremlin will render its terminal UI with OpenTUI. OpenTUI's native renderer fails on Node 24 with
+- Zeta will render its terminal UI with OpenTUI. OpenTUI's native renderer fails on Node 24 with
   "OpenTUI native FFI is not available for this runtime yet".
 - OpenTUI supports Bun, and Node 26.4 or later only with experimental FFI enabled. Its testing docs
   use Bun.
@@ -24,7 +24,7 @@
 
 ## Decision
 
-Gremlin uses Bun as its runtime, package manager, and test runner.
+Zeta uses Bun as its runtime, package manager, and test runner.
 
 - `bun.lock` is the only lockfile. `packageManager` in `package.json` pins the Bun version, and CI
   installs that version.

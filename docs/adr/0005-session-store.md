@@ -51,8 +51,8 @@ The `session` module owns one store for application state. React reads it with
 - A failed refresh keeps the previous items and shows the error.
 - A rate-limit response pauses polling until the reset time. Manual refresh does not bypass the
   pause.
-- Gremlin keeps no GitHub response cache. A cache needs a measured cost first, and manual refresh
-  must bypass it.
+- Zeta keeps no GitHub response cache. A cache needs a measured cost first, and manual refresh must
+  bypass it.
 
 ### Actions
 

@@ -5,7 +5,7 @@
 
 ## Context
 
-- Gremlin needs a terminal renderer with scrolling panes, focus, configurable shortcuts, resize
+- Zeta needs a terminal renderer with scrolling panes, focus, configurable shortcuts, resize
   handling, and clean terminal restore on quit.
 - A prototype with sample data showed all five on OpenTUI with React on Bun. Headless tests covered
   the panes, focus, shortcuts, and resize. A pseudo-terminal run covered quit with `q`, Ctrl+C, and
@@ -24,7 +24,7 @@
 
 ## Decision
 
-Gremlin renders its terminal UI with OpenTUI and its React bindings, on Bun.
+Zeta renders its terminal UI with OpenTUI and its React bindings, on Bun.
 
 ### Shortcuts
 

@@ -2,7 +2,7 @@ import { defineConfig } from 'vite-plus';
 
 // Explicit commands opt in; language servers keep the ordinary diagnostics.
 // eslint-disable-next-line node/no-process-env -- Scoped to the style command's child process.
-const styleEnabled = process.env.GREMLIN_LINT_STYLE === '1';
+const styleEnabled = process.env.ZETA_LINT_STYLE === '1';
 
 const blockStatements = ['if', 'for', 'while', 'do', 'switch', 'try'];
 
@@ -53,7 +53,7 @@ export default defineConfig({
     rules: {
       ...(styleEnabled
         ? {
-            'gremlin/naming-convention': 'error',
+            'zeta/naming-convention': 'error',
             'eslint/no-cond-assign': ['error', 'always'],
             'eslint/id-denylist': [
               'error',
@@ -77,9 +77,9 @@ export default defineConfig({
               'opts',
             ],
             'eslint/one-var': ['error', 'never'],
-            'gremlin/helper-before-use': 'error',
-            'gremlin/max-condition-checks': 'error',
-            'gremlin/type-placement': 'error',
+            'zeta/helper-before-use': 'error',
+            'zeta/max-condition-checks': 'error',
+            'zeta/type-placement': 'error',
             '@stylistic/padding-line-between-statements': paddingRule(
               ...statementPadding,
               ...declarationPadding,
@@ -87,7 +87,7 @@ export default defineConfig({
             ),
           }
         : {}),
-      'gremlin/module-boundaries': 'error',
+      'zeta/module-boundaries': 'error',
       'typescript/no-unnecessary-condition': 'error',
       'typescript/prefer-readonly': 'error',
       'typescript/no-unsafe-type-assertion': 'error',

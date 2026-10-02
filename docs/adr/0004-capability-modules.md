@@ -5,9 +5,8 @@
 
 ## Context
 
-- Gremlin reads GitHub, classifies work, coordinates a session, runs local actions, saves
-  dismissals, reads config, and renders a terminal UI. Each job needs one clear owner before app
-  code exists.
+- Zeta reads GitHub, classifies work, coordinates a session, runs local actions, saves dismissals,
+  reads config, and renders a terminal UI. Each job needs one clear owner before app code exists.
 - Surveys of mature TUIs suggested layer folders such as `domain/`, `application/`, and `adapters/`.
   In Tau, generic layers and early shared extraction became scaffolding that later had to be
   removed.
@@ -29,7 +28,7 @@
 
 ## Decision
 
-`src/` holds capability modules. A lint rule, `gremlin/module-boundaries`, enforces which module may
+`src/` holds capability modules. A lint rule, `zeta/module-boundaries`, enforces which module may
 import which.
 
 ### Modules

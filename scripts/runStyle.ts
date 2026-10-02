@@ -12,7 +12,7 @@ const run = (commandArguments: string[], styleEnabled: boolean) => {
   const result = spawnSync(process.execPath, [executable, ...commandArguments], {
     stdio: 'inherit',
     // eslint-disable-next-line node/no-process-env -- Only the child linter enables house style.
-    env: { ...process.env, GREMLIN_LINT_STYLE: styleEnabled ? '1' : '0' },
+    env: { ...process.env, ZETA_LINT_STYLE: styleEnabled ? '1' : '0' },
   });
 
   if (result.error) {

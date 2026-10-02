@@ -8,7 +8,7 @@
 - Feature pages duplicate behavior defined in code and tests. Maintaining both lets prose drift from
   behavior.
 - Code shows what a feature does, but not always why it was designed that way.
-- Gremlin records those lasting reasons in ADRs.
+- Zeta records those lasting reasons in ADRs.
 
 ## Options considered
 
@@ -18,7 +18,7 @@
 
 ## Decision
 
-Gremlin documents decisions, not features.
+Zeta documents decisions, not features.
 
 - ADRs record lasting decisions and their reasons. Include only the details needed to understand or
   follow the decision.

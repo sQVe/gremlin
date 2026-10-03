@@ -96,7 +96,36 @@ it.each(['lint', 'style:check'])(
         ],
         0,
       ],
-      ['src/config.ts', ['export const config = 1;'], 0],
+      [
+        'src/config.ts',
+        ["import { invariant } from './invariant.ts';", 'export const config = invariant;'],
+        0,
+      ],
+      [
+        'src/work/checked.ts',
+        ["import { invariant } from '../invariant.ts';", 'export const checked = invariant;'],
+        0,
+      ],
+      [
+        'src/session/checked.ts',
+        ["import { invariant } from '../invariant.ts';", 'export const checked = invariant;'],
+        0,
+      ],
+      [
+        'src/ui/checked.tsx',
+        ["import { invariant } from '../invariant.ts';", 'export const checked = invariant;'],
+        0,
+      ],
+      [
+        'src/invariant.ts',
+        [
+          "import { readFile } from 'node:fs';",
+          "import { useState } from 'react';",
+          "import { work } from './work/work.ts';",
+          'export const invariant = [readFile, useState, work];',
+        ],
+        3,
+      ],
       [
         'src/config.test.ts',
         [
@@ -109,8 +138,9 @@ it.each(['lint', 'style:check'])(
       [
         'src/github/github.ts',
         [
+          "import { invariant } from '../invariant.ts';",
           "import { work } from '../work/work';",
-          'export const github = work;',
+          'export const github = [invariant, work];',
           'export interface Github { id: number }',
         ],
         0,
@@ -118,8 +148,9 @@ it.each(['lint', 'style:check'])(
       [
         'src/localState.ts',
         [
+          "import { invariant } from './invariant.ts';",
           "import { work } from './work/work.js';",
-          'export const localState = work;',
+          'export const localState = [invariant, work];',
           'export interface LocalState { id: number }',
         ],
         0,
@@ -129,8 +160,9 @@ it.each(['lint', 'style:check'])(
         [
           "import { readFile } from 'node:fs/promises';",
           "import { config } from './config.ts';",
+          "import { invariant } from './invariant.ts';",
           "import { work } from './work/work.ts';",
-          'export const actions = [readFile, config, work];',
+          'export const actions = [readFile, config, invariant, work];',
           'export interface Actions { id: number }',
         ],
         0,
@@ -152,9 +184,10 @@ it.each(['lint', 'style:check'])(
       [
         'src/commands.ts',
         [
+          "import { invariant } from './invariant.ts';",
           "import { session } from './session/session.ts';",
           "import { work } from './work/work.ts';",
-          'export const commands = [session, work];',
+          'export const commands = [invariant, session, work];',
         ],
         0,
       ],
@@ -186,9 +219,10 @@ it.each(['lint', 'style:check'])(
           "import process from 'node:process';",
           "import { commands } from './commands.ts';",
           "import { config } from './config.ts';",
+          "import { invariant } from './invariant.ts';",
           "import { session } from './session/session.ts';",
           "import { ui } from './ui/ui.tsx';",
-          'export const terminal = [process, commands, config, session, ui];',
+          'export const terminal = [process, commands, config, invariant, session, ui];',
         ],
         0,
       ],
@@ -199,12 +233,13 @@ it.each(['lint', 'style:check'])(
           "import { commands } from './commands.ts';",
           "import { config } from './config.ts';",
           "import { github } from './github/github.ts';",
+          "import { invariant } from './invariant.ts';",
           "import { localState } from './localState.ts';",
           "import { session } from './session/session.ts';",
           "import { terminal } from './terminal.tsx';",
           "import { ui } from './ui/ui.tsx';",
           "import { work } from './work/work.ts';",
-          'export const index = [actions, commands, config, github, localState, session, terminal, ui, work];',
+          'export const index = [actions, commands, config, github, invariant, localState, session, terminal, ui, work];',
         ],
         0,
       ],
@@ -361,7 +396,10 @@ it.each(['lint', 'style:check'])(
         (line) => reportedPath(line) === join(project, file),
       );
 
-      expect({ file, diagnostics: fileDiagnostics.length }).toEqual({ file, diagnostics: count });
+      expect({ file, diagnostics: fileDiagnostics.length }).toEqual({
+        file,
+        diagnostics: count,
+      });
     }
 
     const expected = fixtures.reduce((total, fixture) => total + fixture[2], 0);

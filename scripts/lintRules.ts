@@ -17,24 +17,34 @@ type ImportSource =
   | ESTree.ExportAllDeclaration;
 
 const folderModules = new Set(['github', 'work', 'session', 'ui']);
-const flatModules = new Set(['config', 'actions', 'localState', 'commands', 'index', 'terminal']);
+
+const flatModules = new Set([
+  'config',
+  'actions',
+  'localState',
+  'commands',
+  'invariant',
+  'index',
+  'terminal',
+]);
 
 const allowedImports = new Map<string, Set<string>>([
-  ['work', new Set()],
-  ['config', new Set()],
-  ['github', new Set(['work'])],
-  ['localState', new Set(['work'])],
-  ['actions', new Set(['work', 'config'])],
-  ['session', new Set(['work'])],
-  ['commands', new Set(['work', 'session'])],
-  ['ui', new Set(['work', 'session', 'commands'])],
-  ['terminal', new Set(['ui', 'session', 'commands', 'config'])],
+  ['work', new Set(['invariant'])],
+  ['config', new Set(['invariant'])],
+  ['invariant', new Set()],
+  ['github', new Set(['work', 'invariant'])],
+  ['localState', new Set(['work', 'invariant'])],
+  ['actions', new Set(['work', 'config', 'invariant'])],
+  ['session', new Set(['work', 'invariant'])],
+  ['commands', new Set(['work', 'session', 'invariant'])],
+  ['ui', new Set(['work', 'session', 'commands', 'invariant'])],
+  ['terminal', new Set(['ui', 'session', 'commands', 'config', 'invariant'])],
   ['index', new Set([...folderModules, ...flatModules])],
 ]);
 
 const typeOnlyImports = new Map([['session', new Set(['github', 'actions', 'localState'])]]);
-const runtimeModules = new Set(['work', 'session', 'commands', 'ui']);
-const rendererFreeModules = new Set(['work', 'session', 'commands']);
+const runtimeModules = new Set(['work', 'invariant', 'session', 'commands', 'ui']);
+const rendererFreeModules = new Set(['work', 'invariant', 'session', 'commands']);
 const packageRoots = new Map<string, string | undefined>();
 
 // The nearest package.json marks the root, so a `src` segment above it never counts.

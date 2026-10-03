@@ -34,3 +34,4 @@ decision replaces it, change its status to Superseded with a link to the replace
 - [0011: GitHub through `gh api`](./0011-github-through-gh-api.md)
 - [0012: Sources find candidates, local rules decide why](./0012-work-sources-and-rules.md)
 - [0013: Hand-written sync over a SQLite cache](./0013-local-sync-cache.md)
+- [0014: Results for expected failures, exceptions for bugs, and checked boundaries](./0014-coding-conventions.md)

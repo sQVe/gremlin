@@ -4,7 +4,7 @@ import { defineConfig } from 'vite-plus';
 export default defineConfig({
   lint: {
     extends: [lint],
-    jsPlugins: ['./scripts/zetaPlugin.ts'],
+    jsPlugins: ['./scripts/lintRules.ts'],
     rules: { 'zeta/module-boundaries': 'error' },
   },
   fmt: {

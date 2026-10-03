@@ -182,7 +182,7 @@ const literalSourceOf = (source: ESTree.Expression): string | undefined => {
   return source.quasis[0]?.value.cooked ?? undefined;
 };
 
-const zetaPlugin: Plugin = {
+const lintRules: Plugin = {
   meta: { name: 'zeta' },
   rules: {
     'module-boundaries': {
@@ -303,4 +303,4 @@ const zetaPlugin: Plugin = {
   },
 };
 
-export default zetaPlugin;
+export default lintRules;

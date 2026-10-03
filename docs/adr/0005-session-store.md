@@ -37,8 +37,8 @@ The `session` module owns one store for application state. React reads it with
   next snapshot.
 - The UI sends intents. It does not change application state directly.
 - React keeps only focus, modal, and viewport state.
-- The snapshot holds one item per PR with all its reasons. Selection and dismissal use the stable PR
-  identity.
+- The snapshot holds one item per subject, such as a pull request, issue, or release, with all its
+  reasons. Selection and dismissal use the stable subject identity.
 
 ### Refresh
 
@@ -51,8 +51,8 @@ The `session` module owns one store for application state. React reads it with
 - A failed refresh keeps the previous items and shows the error.
 - A rate-limit response pauses polling until the reset time. Manual refresh does not bypass the
   pause.
-- Zeta keeps no GitHub response cache. A cache needs a measured cost first, and manual refresh must
-  bypass it.
+- Cached data and its sync follow [ADR 0013](./0013-local-sync-cache.md). A manual refresh bypasses
+  every validator.
 
 ### Actions
 
@@ -65,7 +65,6 @@ The `session` module owns one store for application state. React reads it with
 - Tests drive the store with fake functions and a fake clock, without a renderer.
 - Cost: a hand-written store needs its own tests for subscription and snapshot identity.
 - Cost: every subscriber renders on each snapshot change. Selectors wait for measured contention.
-- Cost: without a cache, every refresh costs full GitHub API calls.
 
 ## See also
 

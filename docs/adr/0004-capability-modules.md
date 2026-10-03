@@ -54,8 +54,8 @@ import which.
   `commands` also import no React or OpenTUI packages.
 - Type imports count as dependencies. Dynamic imports must use a literal path.
 
-The rule holds the exact table. A change that keeps these directions updates the rule. A change that
-reverses a direction needs a new ADR.
+The rule holds the exact table. A change that keeps these directions updates the rule. A new module
+joins the table with the ADR that introduces it. A change that reverses a direction needs a new ADR.
 
 ### Code placement
 

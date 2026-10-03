@@ -31,3 +31,4 @@ decision replaces it, change its status to Superseded with a link to the replace
 - [0008: One owner for terminal lifetime](./0008-terminal-lifetime.md)
 - [0009: Versioned local state and config](./0009-local-state-and-config.md)
 - [0010: One project base shared with Phi](./0010-shared-project-base.md)
+- [0011: GitHub through `gh api graphql`](./0011-github-through-gh-api.md)

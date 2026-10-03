@@ -1,5 +1,4 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["scripts/*.ts"],
-  "ignoreDependencies": ["@stylistic/eslint-plugin", "jiti"]
+  "entry": ["scripts/*.ts"]
 }

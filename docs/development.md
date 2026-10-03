@@ -23,15 +23,19 @@ checks on staged files.
 | `bun run test`                    | Run the full test suite.                                                  |
 | `bun run test tests/lint.test.ts` | Run one test file.                                                        |
 | `bun run test:changed`            | Run tests affected by uncommitted changes.                                |
-| `bun run style:check`             | Check all lint rules, including house style.                              |
-| `bun run style:fix`               | Apply safe lint fixes, then format.                                       |
+| `bun run style:check`             | Check all lint rules, including house style, with `seam`.                 |
+| `bun run style:fix`               | Apply safe lint fixes with `seam --fix`, then format.                     |
 | `bun run lint`                    | Run ordinary lint diagnostics, as editors do.                             |
 | `bun run format`                  | Format files.                                                             |
 | `bun run knip`                    | Find unused files, exports, and dependencies.                             |
 
+House style comes from the [`@sqve/seam`](https://www.npmjs.com/package/@sqve/seam) package. Its
+`seam` command turns on the house rules for its own lint run, so editors and `bun run lint` show the
+ordinary rules only. Zeta adds one local rule, `zeta/module-boundaries`, from
+[scripts/lintRules.ts](../scripts/lintRules.ts). It runs in every lint command.
+
 Style commands accept file paths, for example `bun run style:fix tests/lint.test.ts`. Rename
-bindings and move helpers manually. Do not set `ZETA_LINT_STYLE` globally; the style commands set it
-for their child linter.
+bindings and move helpers manually.
 
 Configure linting, formatting, and staged checks in [vite.config.ts](../vite.config.ts). Run
 installed command-line tools with `bunx --bun`, as the scripts do. The tools start with a Node
